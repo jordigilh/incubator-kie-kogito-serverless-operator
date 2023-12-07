@@ -7,6 +7,7 @@ import (
 	"github.com/apache/incubator-kie-kogito-serverless-operator/container-builder/client"
 	"github.com/apache/incubator-kie-kogito-serverless-operator/controllers/platform/services"
 	"github.com/apache/incubator-kie-kogito-serverless-operator/controllers/profiles/common"
+	"github.com/apache/incubator-kie-kogito-serverless-operator/controllers/profiles/common/constants"
 	"github.com/apache/incubator-kie-kogito-serverless-operator/controllers/profiles/common/properties"
 	"github.com/apache/incubator-kie-kogito-serverless-operator/log"
 	"github.com/apache/incubator-kie-kogito-serverless-operator/utils"
@@ -86,7 +87,7 @@ func createDeployment(ctx context.Context, client client.Client, platform *opera
 	liveProbe := readyProbe.DeepCopy()
 	liveProbe.ProbeHandler.HTTPGet.Path = common.QuarkusHealthPathLive
 	dataDeployContainer := &corev1.Container{
-		Image:          svc.GetServiceImageName(common.PersistenceTypeEphemeral),
+		Image:          svc.GetServiceImageName(constants.PersistenceTypeEphemeral),
 		Env:            svc.GetEnvironmentVariables(),
 		Resources:      svc.GetPodResourceRequirements(),
 		ReadinessProbe: readyProbe,
@@ -94,7 +95,7 @@ func createDeployment(ctx context.Context, client client.Client, platform *opera
 		Ports: []corev1.ContainerPort{
 			{
 				Name:          utils.HttpScheme,
-				ContainerPort: int32(common.DefaultHTTPWorkflowPortInt),
+				ContainerPort: int32(constants.DefaultHTTPWorkflowPortInt),
 				Protocol:      corev1.ProtocolTCP,
 			},
 		},
